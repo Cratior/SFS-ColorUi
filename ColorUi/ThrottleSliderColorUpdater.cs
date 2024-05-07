@@ -39,7 +39,7 @@ namespace ColorUi
             throttle = FindObjectOfType<Throttle>();
             throttleDrawer = FindObjectOfType<ThrottleDrawer>();
             aeroDrawer = FindObjectOfType<AeroDrawer>();
-            resourceBar = FindObjectOfType<SFS.UI.ResourceBar>();
+            resourceBar = FindObjectOfType<ResourceBar>();
 
             if (throttle == null || throttleDrawer == null || aeroDrawer == null || resourceBar == null)
             {
@@ -68,6 +68,7 @@ namespace ColorUi
             {
                 Color color = Color.Lerp(ThrottleminColor, ThrottlemaxColor, throttlePercent);
                 fillImage.color = color;
+                throttleDrawer.throttlePercentText.Color = color;
             }
             ColorArrow();
         }
@@ -92,24 +93,26 @@ namespace ColorUi
             arrow.text.color = color;
             arrow.line_Shadow.color = color;
             arrow.text_Shadow.color = color;
+            arrow.line.transform.parent.GetChild(0).gameObject.GetComponent<Image>().color = color;//thanks to Altair
+            arrow.line.transform.GetChild(1).gameObject.GetComponent<Image>().color = color;
         }
 
         private Color CalculateArrowColor(VelocityArrowDrawer arrowDrawer)
         {
-            //float xVelocity = Mathf.Abs(arrowDrawer.velocity_X.holder.position.x);
-            //float yVelocity = Mathf.Abs(arrowDrawer.velocity_Y.holder.position.y);
+            float xVelocity = Mathf.Abs(arrowDrawer.velocity_X.holder.position.x);
+            float yVelocity = Mathf.Abs(arrowDrawer.velocity_Y.holder.position.y);
 
-            //Color xColor = Color.Lerp(Color.blue, Color.red, Mathf.InverseLerp(0f, 500f, xVelocity));
-            //Color yColor = Color.Lerp(Color.magenta, Color.green, Mathf.InverseLerp(0f, 500f, yVelocity));
+            Color xColor = Color.Lerp(Color.blue, Color.red, Mathf.InverseLerp(0f, 500f, xVelocity));
+            Color yColor = Color.Lerp(Color.magenta, Color.green, Mathf.InverseLerp(0f, 500f, yVelocity));
 
-            //float totalVelocity = xVelocity + yVelocity;
-            //float xWeight = xVelocity / totalVelocity;
-            //float yWeight = yVelocity / totalVelocity;
+            float totalVelocity = xVelocity + yVelocity;
+            float xWeight = xVelocity / totalVelocity;
+            float yWeight = yVelocity / totalVelocity;
 
-            //Color finalColor = xColor * xWeight + yColor * yWeight;
+            Color finalColor = xColor * xWeight + yColor * yWeight;
 
-            //return finalColor;
-            return Color.white;
+            return finalColor;
+            //return Color.white;
         }
 
         private void UpdateUIThemeColors()
@@ -120,8 +123,15 @@ namespace ColorUi
 
         private void fuelbar()
         {
-            Color color = Color.Lerp(FuelminColor, FuelmaxColor, resourceBar.bar.fillAmount);
-            resourceBar.bar.color = color;
+            //Color color = Color.Lerp(FuelminColor, FuelmaxColor, resourceBar.bar.fillAmount);
+            //resourceBar.bar.color = color;
+            ResourceBar[] allResourceBars = FindObjectsOfType<ResourceBar>();
+            foreach (ResourceBar bar in allResourceBars)
+            {
+                Color color = Color.Lerp(FuelminColor, FuelmaxColor, bar.bar.fillAmount);
+                bar.bar.color = color;
+                bar.percentText.Color = color;
+            }
         }
 
         private void ColorTemperatureBars()
@@ -130,6 +140,7 @@ namespace ColorUi
             {
                 Color color = Color.Lerp(TempminColor, TempmaxColor, bar.bar.fillAmount);
                 bar.bar.color = color;
+                bar.temperatureDegree.Color = color;
             }
         }
     }

@@ -70,24 +70,30 @@ namespace ColorUi
 			}
 		}
 
-        // Token: 0x0600003F RID: 63
-        public override void Load()
-        {
-            base.Load();
-            SceneHelper.OnSceneLoaded += OnSceneLoadedHandler;
+		// Token: 0x0600003F RID: 63
+		public override void Load()
+		{
+			base.Load();
+			SceneHelper.OnSceneLoaded += delegate()
+			{
+				new GameObject().AddComponent<ThrottleSliderColorUpdater>();
+            };
         }
+        //// Token: 0x0600003F RID: 63
+        //public override void Load()
+        //{
+        //    base.Load();
+        //    SceneHelper.OnSceneLoaded += OnSceneLoadedHandler;
+        //}
 
-        private void OnSceneLoadedHandler(Scene scene)
-        {
-            GameObject configObject = new GameObject();
-            configObject.AddComponent<ThrottleSliderColorUpdater>();
-            Config.SettingsData configData = Config.LoadConfig();
-            ThrottleSliderColorUpdater configComponent = configObject.GetComponent<ThrottleSliderColorUpdater>();
-            //configComponent.ApplyConfig(configData);
-        }
-
-
-
+        //private void OnSceneLoadedHandler(Scene scene)
+        //{
+        //    GameObject configObject = new GameObject();
+        //    configObject.AddComponent<ThrottleSliderColorUpdater>();
+        //    Config.SettingsData configData = Config.LoadConfig();
+        //    ThrottleSliderColorUpdater configComponent = configObject.GetComponent<ThrottleSliderColorUpdater>();
+        //    //configComponent.ApplyConfig(configData);
+        //}
     }
 
 }
