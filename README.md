@@ -15,7 +15,7 @@ Currently this dosent save the or load the color from settings, i would love to 
   ![Fuel Color](https://github.com/Cratior/SFS-ColorUi/assets/55932656/34620d66-6ecd-46d0-b912-1794a1af4dfe)
 
 - **Heat:** Temperature bars change color to indicate temperature levels.<br>
-  ![Heat Color](https://github.com/Cratior/SFS-ColorUi/assets/55932656/57ffa068-14e7-4cc1-9cdd-3fcaeca80a09)
+  ![Rentry heat](https://github.com/Cratior/SFS-ColorUi/assets/55932656/8cf057bc-a835-4a6a-ad87-035e2a71b783)
 
 - **Velocity Arrow:** Color changes based on X and Y velocity vectors.<br>
 Thanks to Altair for making it color the full arrow.<br>
