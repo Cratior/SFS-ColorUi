@@ -19,7 +19,7 @@ When there are multiple rockets the main one/only oone of the rocket will update
   ![Fuel Color](https://github.com/Cratior/SFS-ColorUi/assets/55932656/34620d66-6ecd-46d0-b912-1794a1af4dfe)
 
 - **Heat:** Temperature bars change color to indicate temperature levels.<br>
-  ![Rentry heat](https://github.com/Cratior/SFS-ColorUi/assets/55932656/9003bf20-7a23-4017-9f0a-c051797df229)
+  ![Rentry heat](https://github.com/Cratior/SFS-ColorUi/assets/55932656/c51ee5ef-1df9-4d04-b160-1796c3bcf875)
 
 - **Velocity Arrow:** Color changes based on X and Y velocity vectors.<br>
 Thanks to Altair for making it color the full arrow.<br>
