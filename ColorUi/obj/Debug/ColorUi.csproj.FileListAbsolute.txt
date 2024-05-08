@@ -1,0 +1,7 @@
+C:\Users\callu\OneDrive\Desktop\color ui\ColorUi\obj\Debug\ColorUi.csproj.AssemblyReference.cache
+C:\Users\callu\OneDrive\Desktop\color ui\ColorUi\obj\Debug\ColorUi.csproj.CoreCompileInputs.cache
+C:\Users\callu\OneDrive\Documents\My Games\Spaceflight Simulator Game\Mods\ColorUi.dll
+C:\Users\callu\OneDrive\Documents\My Games\Spaceflight Simulator Game\Mods\ColorUi.pdb
+C:\Users\callu\OneDrive\Desktop\color ui\ColorUi\obj\Debug\ColorUi.csproj.CopyComplete
+C:\Users\callu\OneDrive\Desktop\color ui\ColorUi\obj\Debug\ColorUi.dll
+C:\Users\callu\OneDrive\Desktop\color ui\ColorUi\obj\Debug\ColorUi.pdb
