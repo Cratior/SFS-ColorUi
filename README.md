@@ -5,7 +5,7 @@ Edits the SFS UI to be colourful and imformative
 To those like me who struggle to get imformation from text and plain patterns this mod will help a lot, it makes the throttle, fuel bars heat bars and velocity arrow.
 
 # Important
-Currently this dosent save the or load the color from settings, i would love to add it but currently i dont know how i have never amde that, i could use a ingame menu but it would look bad and im sure you have enouigh windows ingame.
+When there are multiple rockets the main one/only oone of the rocket will update the color, i will try to fix but this is due to the fact each rocket has its own throttle and the code gets the first one when you load in.
 
 ## Features
 - **Throttle:** Changes color according to throttle percentage. <br>
