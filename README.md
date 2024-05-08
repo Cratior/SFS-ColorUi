@@ -2,6 +2,7 @@
 Edits the SFS UI to be colourful and imformative
 
 # What is this
+Its a nice little mod to let you customise the ui by making the indectors change color, you could even make it one color.
 To those like me who struggle to get imformation from text and plain patterns this mod will help a lot, it makes the throttle, fuel bars heat bars and velocity arrow.
 
 # Important
