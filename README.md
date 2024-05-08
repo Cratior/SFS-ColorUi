@@ -7,7 +7,7 @@ To those like me who struggle to get imformation from text and plain patterns th
 
 # Important
 The colors are r,g,b and 0-1
-Some color and rgb examples can be found at: ![Colors pdf website](https://www.tug.org/pracjourn/2007-4/walden/color.pdf)
+Some color and rgb examples can be found at: https://www.tug.org/pracjourn/2007-4/walden/color.pdf
 
 When there are multiple rockets the main one/only oone of the rocket will update the color, i will try to fix but this is due to the fact each rocket has its own throttle and the code gets the first one when you load in.
 
