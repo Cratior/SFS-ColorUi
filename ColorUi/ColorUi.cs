@@ -1,5 +1,4 @@
-﻿using _Game.Drawers;
-using SFS.UI;
+﻿using SFS.UI;
 using SFS.World;
 using UITools;
 using UnityEngine;
@@ -17,24 +16,19 @@ namespace ColorUi
                 return ModSettings<SettingsData>.settings;
             }
         }
-        public Color ThrottleminColor = new Color(0.8f, 0.8f, 0.0f);
-        public Color ThrottlemaxColor = new Color(1f, 0f, 0f);
-
-        public Color FuelminColor = Color.yellow;
-        public Color FuelmaxColor = Color.white;
-
-        public Color TempminColor = new Color(0.9f, 0.5f, 0.1f);
-        public Color TempmaxColor = Color.red;
 
         private Throttle throttle;
         private ThrottleDrawer throttleDrawer;
         private AeroDrawer aeroDrawer;
-        private ResourceBar resourceBar;
-        private FuelTransferUI FuelTransferUI;
-        private FuelTransferDrawer fuelTransferDrawer;
+        private ResourceBar[] resourceBars;
+        private FuelTransferUI[] fuelTransferUIs;
+
+        private Color previousThrottleColor;
+
         private void Awake()
         {
             FindUIComponents();
+            InvokeRepeating(nameof(SlowUpdate), 0.0f, 0.4f);
         }
 
         private void FindUIComponents()
@@ -42,19 +36,20 @@ namespace ColorUi
             throttle = FindObjectOfType<Throttle>();
             throttleDrawer = FindObjectOfType<ThrottleDrawer>();
             aeroDrawer = FindObjectOfType<AeroDrawer>();
-            resourceBar = FindObjectOfType<ResourceBar>();
-            FuelTransferUI = FindObjectOfType<FuelTransferUI>();
-            fuelTransferDrawer = FindObjectOfType<FuelTransferDrawer>();
-            if (throttle == null || throttleDrawer == null || aeroDrawer == null || resourceBar == null)
+            resourceBars = FindObjectsOfType<ResourceBar>();
+            fuelTransferUIs = FindObjectsOfType<FuelTransferUI>();
+
+            if (throttle == null || throttleDrawer == null || aeroDrawer == null || resourceBars.Length == 0)
             {
                 Debug.LogWarning("One or more UI components not found in the scene.");
             }
+            Debug.Log("Updated UI components found.");
         }
 
-        private void LateUpdate()
+        private void SlowUpdate()
         {
             ColorArrow();
-            fuelbar();
+            FuelBar();
             ColorTemperatureBars();
             if (throttle != null && throttleDrawer != null)
             {
@@ -64,8 +59,8 @@ namespace ColorUi
                     rocket.throttle.throttlePercent.OnChange += (oldValue, newValue) => { UpdateSliderColor(); };
                 }
             }
-        }
 
+        }
         private void UpdateSliderColor()
         {
             Rocket rocket = PlayerController.main.player.Value as Rocket;
@@ -73,17 +68,11 @@ namespace ColorUi
             Image fillImage = throttleDrawer.throttleSlider.GetComponentInChildren<Image>();
             if (fillImage != null)
             {
-                Color color = Color.Lerp(ColorUi.Settings.ThrottleminColor, ColorUi.Settings.ThrottlemaxColor, throttlePercent);
+                Color color = Color.Lerp(Settings.ThrottleminColor, Settings.ThrottlemaxColor, throttlePercent);
                 fillImage.color = color;
                 throttleDrawer.throttlePercentText.Color = color;
             }
         }
-
-
-
-
-
-
         private void ColorArrow()
         {
             VelocityArrowDrawer arrowDrawer = FindObjectOfType<VelocityArrowDrawer>();
@@ -104,7 +93,7 @@ namespace ColorUi
             arrow.text.color = color;
             arrow.line_Shadow.color = color;
             arrow.text_Shadow.color = color;
-            arrow.line.transform.parent.GetChild(0).gameObject.GetComponent<Image>().color = color;//thanks to Altair
+            arrow.line.transform.parent.GetChild(0).gameObject.GetComponent<Image>().color = color;
             arrow.line.transform.GetChild(1).gameObject.GetComponent<Image>().color = color;
         }
 
@@ -123,25 +112,21 @@ namespace ColorUi
             Color finalColor = xColor * xWeight + yColor * yWeight;
 
             return finalColor;
-            //return Color.white;
         }
 
-        private void fuelbar()
+        private void FuelBar()
         {
-            //Color color = Color.Lerp(FuelminColor, FuelmaxColor, resourceBar.bar.fillAmount);
-            //resourceBar.bar.color = color;
-            ResourceBar[] allResourceBars = FindObjectsOfType<ResourceBar>();
-            foreach (ResourceBar bar in allResourceBars)
+            foreach (ResourceBar bar in resourceBars)
             {
-                Color color = Color.Lerp(ColorUi.Settings.FuelminColor, ColorUi.Settings.FuelmaxColor, bar.bar.fillAmount);
+                Color color = Color.Lerp(Settings.FuelminColor, Settings.FuelmaxColor, bar.bar.fillAmount);
                 bar.bar.color = color;
                 bar.percentText.Color = color;
             }
-            FuelTransferUI[] fuelTransferUIs = FindObjectsOfType<FuelTransferUI>();
+
             foreach (FuelTransferUI fuelTransferUI in fuelTransferUIs)
             {
                 float fuelPercent = fuelTransferUI.resourceBar.fillAmount;
-                Color color = Color.Lerp(FuelminColor, FuelmaxColor, fuelPercent);
+                Color color = Color.Lerp(Settings.FuelminColor, Settings.FuelmaxColor, fuelPercent);
                 fuelTransferUI.resourceBar.color = color;
                 fuelTransferUI.percentText.Color = color;
             }
@@ -149,9 +134,11 @@ namespace ColorUi
 
         private void ColorTemperatureBars()
         {
+            if (aeroDrawer == null) return;
+
             foreach (TemperatureBar bar in aeroDrawer.bars)
             {
-                Color color = Color.Lerp(ColorUi.Settings.TempminColor, ColorUi.Settings.TempmaxColor, bar.bar.fillAmount);
+                Color color = Color.Lerp(Settings.TempminColor, Settings.TempmaxColor, bar.bar.fillAmount);
                 bar.bar.color = color;
                 bar.temperatureDegree.Color = color;
             }
