@@ -103,7 +103,7 @@ namespace ColorUi
                 }
             });
 
-            Builder.CreateLabel(box, size.x - 50, 40, 0, 0, "FuelColors");
+            Builder.CreateLabel(box, size.x - 50, 40, 0, 0, "TempretureColors");
             // Temperature min color inputs
             Container minContainerTemp = Builder.CreateContainer(box, 0, 0);
             minContainerTemp.CreateLayoutGroup(SFS.UI.ModGUI.Type.Horizontal, TextAnchor.MiddleLeft, 0f, null, true);

@@ -1,8 +1,10 @@
-﻿using SFS.UI;
+﻿using _Game.Drawers;
+using SFS.UI;
 using SFS.World;
 using UITools;
 using UnityEngine;
 using UnityEngine.UI;
+using static SFS.World.Resources;
 
 namespace ColorUi
 {
@@ -28,7 +30,8 @@ namespace ColorUi
         private ThrottleDrawer throttleDrawer;
         private AeroDrawer aeroDrawer;
         private ResourceBar resourceBar;
-
+        private FuelTransferUI FuelTransferUI;
+        private FuelTransferDrawer fuelTransferDrawer;
         private void Awake()
         {
             FindUIComponents();
@@ -40,29 +43,33 @@ namespace ColorUi
             throttleDrawer = FindObjectOfType<ThrottleDrawer>();
             aeroDrawer = FindObjectOfType<AeroDrawer>();
             resourceBar = FindObjectOfType<ResourceBar>();
-
+            FuelTransferUI = FindObjectOfType<FuelTransferUI>();
+            fuelTransferDrawer = FindObjectOfType<FuelTransferDrawer>();
             if (throttle == null || throttleDrawer == null || aeroDrawer == null || resourceBar == null)
             {
                 Debug.LogWarning("One or more UI components not found in the scene.");
             }
         }
 
-        private void Update()
+        private void LateUpdate()
         {
-            FindUIComponents();
-
+            ColorArrow();
+            fuelbar();
+            ColorTemperatureBars();
             if (throttle != null && throttleDrawer != null)
             {
-                float throttlePercent = throttle.throttlePercent.Value;
-                UpdateSliderColor(throttlePercent);
-                ColorArrow();
-                fuelbar();
-                ColorTemperatureBars();
+                Rocket rocket = PlayerController.main.player.Value as Rocket;
+                if (rocket != null && rocket.throttle != null)
+                {
+                    rocket.throttle.throttlePercent.OnChange += (oldValue, newValue) => { UpdateSliderColor(); };
+                }
             }
         }
 
-        private void UpdateSliderColor(float throttlePercent)
+        private void UpdateSliderColor()
         {
+            Rocket rocket = PlayerController.main.player.Value as Rocket;
+            float throttlePercent = rocket?.throttle?.throttlePercent ?? 0.5f;
             Image fillImage = throttleDrawer.throttleSlider.GetComponentInChildren<Image>();
             if (fillImage != null)
             {
@@ -70,8 +77,12 @@ namespace ColorUi
                 fillImage.color = color;
                 throttleDrawer.throttlePercentText.Color = color;
             }
-
         }
+
+
+
+
+
 
         private void ColorArrow()
         {
@@ -125,6 +136,14 @@ namespace ColorUi
                 Color color = Color.Lerp(ColorUi.Settings.FuelminColor, ColorUi.Settings.FuelmaxColor, bar.bar.fillAmount);
                 bar.bar.color = color;
                 bar.percentText.Color = color;
+            }
+            FuelTransferUI[] fuelTransferUIs = FindObjectsOfType<FuelTransferUI>();
+            foreach (FuelTransferUI fuelTransferUI in fuelTransferUIs)
+            {
+                float fuelPercent = fuelTransferUI.resourceBar.fillAmount;
+                Color color = Color.Lerp(FuelminColor, FuelmaxColor, fuelPercent);
+                fuelTransferUI.resourceBar.color = color;
+                fuelTransferUI.percentText.Color = color;
             }
         }
 
